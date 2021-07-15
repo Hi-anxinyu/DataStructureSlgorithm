@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>demo</title>
+  </head>
+  <body>
+    <script>
+      /**
+       *   1.不能添加其他辅助代码 （10分）
+       *   2.实现连缀调用（10分）
+       *   3.实现任务的正确顺序执行（10分）
+       *   4.实现在保证顺序的前提下正确等待执行（10分）
+       *   5.实现在链式任务中出现sleepFirst任务的时候需要提前执行（10分）
+       *   6.正确实现任务的收集 （10分）
+       *   7.在收集任务的时候确保每个任务在最后执行的时候顺序是正确的（10分）
+       *   8.通过正确的形式处理时间的等待执行（10分）
+       *   9.实现在此基础上可以无限链式调用下去 （10分）
+       *   10.添加注释，注释必须标识每一步代码的执行顺序（10分）
+       */
+
+       
+       function Person(name) {
+        // 补全代码
+           console.dir(this);//检测一个对象是否存在另一个的原型链中
+           //判断该函数是否通过new的形式调用
+           if(!Person.prototype.isPrototypeOf(this)){
+                return new Person(name)
+           }
+           
+           //将方法按照要求排序 添加到数组
+           this.tasks = []
+           this.init(name)
+           //在创建一个方法调用函数
+           //执行run函数
+           setTimeout(() => {
+               this.run()
+           }, 0);
+       }
+       Person.prototype = {
+           async run(){
+               //循环将任务添加到数组
+               for(let i of this.tasks){
+                   await i();
+               }
+           },
+           //初始化 打印名字
+           init(name){
+                function task(){
+                   console.log(`this is ${name}`);
+                }
+                this.tasks.push(task);
+                return this;
+           },
+           eat(food){
+                function task(){
+                    console.log(`正在吃${food}`);
+                }
+                this.tasks.push(task);
+                return this;
+           },
+           sleep(time){
+                function task(){
+                    return new Promise((resolve,reject)=>{
+                        setTimeout(() => {
+                            resolve()
+                        }, time);
+                    })
+                }
+                this.tasks.push(task);
+                return this;
+           },
+           sleepFirst(time){
+            function task(){
+                    return new Promise((resolve,reject)=>{
+                        setTimeout(() => {
+                            resolve()
+                        }, time);
+                    })
+                }
+                this.tasks.unshift(task);
+                return this;
+           }
+       }
+       Person("tom").eat("香蕉").sleep(2000).eat("苹果").sleepFirst(3000).eat("火腿");
+    // 执行结果是：首先等待3秒 然后打印this is tom 再打印正在吃香蕉 然后等待2S 再打印正在吃苹果 最后打印正在吃火腿
+    </script>
+  </body>
+</html>

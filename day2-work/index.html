@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>es6-2</title>
   </head>
   <body>
     <script>
@@ -17,51 +17,121 @@
        *  5、[...],Array.from() 都可以把当前集合转为数组
        *  6、使用 for of 或者是 forEach遍历
        *  7、特殊的set WeakSet 只接受对象形式的元素作为集合的一员除了(null)
-       */ 
-    //   const arr = [1, 2, 3, 4, 5, 6, 1];
-    //   let set = new Set(arr);
-    //   console.log(set,arr); // {1, 2, 3, 4, 5, 6} //[1, 2, 3, 4, 5, 6, 1]
+       */
+      //   const arr = [1, 2, 3, 4, 5, 6, 1];
+      //   let set = new Set(arr);
+      //   console.log(set,arr); // {1, 2, 3, 4, 5, 6} //[1, 2, 3, 4, 5, 6, 1]
 
-    //   set.add(20);//add方法
-    //   console.log(set);//{1, 2, 3, 4, 5, 6, 20}
+      //   set.add(20);//add方法
+      //   console.log(set);//{1, 2, 3, 4, 5, 6, 20}
 
-    //   set.delete(20);//delete方法
-    //   console.log(set);//{1, 2, 3, 4, 5, 6}
+      //   set.delete(20);//delete方法
+      //   console.log(set);//{1, 2, 3, 4, 5, 6}
 
-    //   //去重
-    //   let newArr = [...new Set(set)];
-    //   console.log(newArr);
+      //   //去重
+      //   let newArr = [...new Set(set)];
+      //   console.log(newArr);
 
-    // //   set.clear();//clear方法 
-    // //   console.log(set);//{}
-    //     console.log([...set]);//[1, 2, 3, 4, 5, 6]//转为数组
-    //   //for of 遍历
-    // //   for(let i of set){
-    // //       console.log(i);// 1,2,3,4,5,6
-    // //   }
-    // const obj= {a:1,b:2};//可以是任意对象类型 函数 数组 方法 正则
-    // let weakset = new WeakSet();
-    // weakset.add(obj);
-    // console.log(weakset);//{{a:1,b:2}}
+      // //   set.clear();//clear方法
+      // //   console.log(set);//{}
+      //     console.log([...set]);//[1, 2, 3, 4, 5, 6]//转为数组
+      //   //for of 遍历
+      // //   for(let i of set){
+      // //       console.log(i);// 1,2,3,4,5,6
+      // //   }
+      // const obj= {a:1,b:2};//可以是任意对象类型 函数 数组 方法 正则
+      // let weakset = new WeakSet();
+      // weakset.add(obj);
+      // console.log(weakset);//{{a:1,b:2}}
 
-    /** 
-     * Map数据结构 是一种key value的映射关系 其中key可以是任意类型
-     * 其中方法有
-     * 1、set设置成员
-     * 2、get获取成员
-     * 3、size 成员的数量
-     * 4、clear 清空成员
+      /**
+       * Map数据结构 是一种key value的映射关系 其中key可以是任意类型
+       * 其中方法有
+       * 1、set设置成员
+       * 2、get获取成员
+       * 3、size 成员的数量
+       * 4、clear 清空成员
+       * 5、has 判断是否存在有指定key
+       * 6、delete 删除成员
+       */
+      // const arr = [1,2,3];
+      // let map = new Map;
+      // map.set(arr,arr);//设置成员
+      // console.log(map,map[arr]);
+      // //遍历map
+      // console.log(map.keys());
+      // console.log(map.values());
+      // console.log(map.entries());//[["1,2,3", Array(3)]]
+      // //获取成员 get
+      // console.log(map.get(arr));//[1, 2, 3]
+      // //删除成员
+      // map.delete(arr);
+
+      /** 
+       * proxy代理 Proxy(target,handle)
+       * 代理目标target target可以是任意的对象数据类型 
+       * 通过handle覆盖target的默认行为 set设置值,get是获取值
+       */
+    //  const target = {a:1};
+    //  let newTarget = new Proxy(target,{
+    //       get:(target,key)=>{
+    //          if(target[key]){
+    //            return target[key]
+    //          }
+    //          return "Hi-anxinyu"
+    //       },
+    //       set:(target,key,value)=>{
+    //           target[key] = value*value;
+    //       }
+    //  })
+    
+    /**
+     * promise 是解决异步代码的一种方案 
+     * promise 的三种状态 创建promise=>pending resolve=>fulfilled reject=>rejected
+     * 创建promise的方式：
+     * 1、 new Promise();
+     * 2、 Promise.resolve()状态直接由pending变成fulfilled
+     * 3、 Promise.reject()状态直接由pending变成fulfilled
+     * 4、 Promise.all(); 批量处理Promise 状态全部为fulfilled 执行.then方法
+     * 5、 Promise.race(); 批量处理promise 状态有一个为fulfilled 执行.then方法
      */
-    const arr = [1,2,3];
-    let map = new Map;
-    map.set(arr,arr);//设置成员
-    console.log(map,map[arr]);
-    //遍历map
-    console.log( Object.keys(map));//["1,2,3"]
-    console.log( Object.values(map));//[[1,2,3]]
-    console.log( Object.entries(map));//[["1,2,3", Array(3)]]
-    //获取成员 get
-    console.log(map.get(arr));//[1, 2, 3]
+
+     //加载图片 时间进度条
+     const imgs = [
+       'https://t7.baidu.com/it/u=963301259,1982396977&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=1297102096,3476971300&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=1032479594,2383177859&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=518698083,437784578&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=2259261418,2370578071&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=3596485721,2479060294&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=2940302502,3015099375&fm=193&f=GIF',
+       'https://t7.baidu.com/it/u=4106415532,899176937&fm=193&f=GIF',
+     ]
+     function loadImg(src){
+        return new Promise((resolve,reject)=>{
+          let img = new Image();
+           img.src = src;
+          console.log(img);
+          // img.src = src;
+          img.onload = function(){
+            resolve(img)
+          }
+          img.onerror = function(e){
+            reject(e)
+          }
+        })
+     }
+     
+     imgs.forEach(item=>{
+          loadImg(item).then(res=>{
+            console.log(res);
+            document.body.appendChild(res)
+         }).catch(e=>{
+           console.log(e);
+         })
+     })
     </script>
   </body>
 </html>
