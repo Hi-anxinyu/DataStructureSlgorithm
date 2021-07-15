@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * set数据结构 set是一个集合 set内的元素不可重复 一般用于数组去重
+       *  1、add方法 忘记和里添加元素 返回原集合
+       *  2、delete方法 删除集合里的元素 返回值是boolean
+       *  3、has方法 判断当前集合是否存在指定元素 返回值是boolean
+       *  4、clear方法   清空当前集合 无返回值
+       *  5、[...],Array.from() 都可以把当前集合转为数组
+       *  6、使用 for of 或者是 forEach遍历
+       *  7、特殊的set WeakSet 只接受对象形式的元素作为集合的一员除了(null)
+       */ 
+    //   const arr = [1, 2, 3, 4, 5, 6, 1];
+    //   let set = new Set(arr);
+    //   console.log(set,arr); // {1, 2, 3, 4, 5, 6} //[1, 2, 3, 4, 5, 6, 1]
+
+    //   set.add(20);//add方法
+    //   console.log(set);//{1, 2, 3, 4, 5, 6, 20}
+
+    //   set.delete(20);//delete方法
+    //   console.log(set);//{1, 2, 3, 4, 5, 6}
+
+    //   //去重
+    //   let newArr = [...new Set(set)];
+    //   console.log(newArr);
+
+    // //   set.clear();//clear方法 
+    // //   console.log(set);//{}
+    //     console.log([...set]);//[1, 2, 3, 4, 5, 6]//转为数组
+    //   //for of 遍历
+    // //   for(let i of set){
+    // //       console.log(i);// 1,2,3,4,5,6
+    // //   }
+    // const obj= {a:1,b:2};//可以是任意对象类型 函数 数组 方法 正则
+    // let weakset = new WeakSet();
+    // weakset.add(obj);
+    // console.log(weakset);//{{a:1,b:2}}
+
+    /** 
+     * Map数据结构 是一种key value的映射关系 其中key可以是任意类型
+     * 其中方法有
+     * 1、set设置成员
+     * 2、get获取成员
+     * 3、size 成员的数量
+     * 4、clear 清空成员
+     */
+    const arr = [1,2,3];
+    let map = new Map;
+    map.set(arr,arr);//设置成员
+    console.log(map,map[arr]);
+    //遍历map
+    console.log( Object.keys(map));//["1,2,3"]
+    console.log( Object.values(map));//[[1,2,3]]
+    console.log( Object.entries(map));//[["1,2,3", Array(3)]]
+    //获取成员 get
+    console.log(map.get(arr));//[1, 2, 3]
+    </script>
+  </body>
+</html>
