@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proxy2</title></title>
+</head>
+<body>
+    <div id='box'></div>
+    <script>
+        /**
+         * let obj = {};
+
+           let newObj = new Proxy(obj, {
+           // 补全代码
+           });
+
+           newObj.createEl({
+           el: box,
+           type: div,
+           data: {
+           name: tom,
+           age: 18
+           },
+           props: {
+           id: div;
+           },
+           one: 我是div的第一段内容{{data.name}},
+           two:我是div的第二段内容{{data.age}}
+           })
+         */
+     let obj ={}
+
+     let newObj = new Proxy(obj,{
+        get(target,property){
+            if(property === 'createEl'){
+                return createEl
+            }else if(Reflect.has(target,property)){
+                return Reflect.get(target,property,receiver)
+            }else{
+                console.warn('该属性不存在');
+            }
+        },
+        set(target,property,value,receiver){
+           obj._data[property] = value;
+           createEl({el:obj._el,type:obj._type,data:obj._data,props:obj._props,...obj._children})
+        }   
+     })
+     let createEl = function({el,type,data,props,...children}){
+        obj._el = el;
+        obj._type = type;
+        obj._data = data;
+        obj._props = props;
+        obj._children = children;
+        //挂载模板 
+        el = document.querySelector(el) || document.body;
+        type = type || 'div';
+
+        //创建元素
+        let element = document.createElement(type);
+
+        //添加属性
+        for(let key in props){
+            element.setAttribute(key,props[key]);
+        }
+        //处理文本节点
+        Object.values(children).forEach(item=>{
+            item = item.replace(/\{\{([\w\.]+)\}\}/,function(str,$0){
+                let key =  $0.split(".")[1];
+                return data[key];
+            })
+            element.appendChild(document.createTextNode(item))
+        })
+      
+         el.childNodes.forEach(node=>node.parentNode.removeChild(node));
+         el.appendChild(element); 
+        
+       
+     }
+     newObj.createEl({
+           el: 'box',
+           type: 'div',
+           data: {
+           name: 'tom',
+           age: '18'
+           },
+           props: {
+           id: 'div',
+           },
+           one: '我是div的第一段内容{{data.name}}',
+           two:'我是div的第二段内容{{data.age}}'
+           })
+    </script>
+</body>
+</html>

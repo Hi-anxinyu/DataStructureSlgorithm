@@ -23,13 +23,10 @@
 
        
        function Person(name) {
-        // 补全代码
-           console.dir(this);//检测一个对象是否存在另一个的原型链中
            //判断该函数是否通过new的形式调用
            if(!Person.prototype.isPrototypeOf(this)){
                 return new Person(name)
            }
-           
            //将方法按照要求排序 添加到数组
            this.tasks = []
            this.init(name)
@@ -51,15 +48,15 @@
                 function task(){
                    console.log(`this is ${name}`);
                 }
-                this.tasks.push(task);
-                return this;
+            this.tasks.push(task);
+            return this;
            },
            eat(food){
                 function task(){
                     console.log(`正在吃${food}`);
                 }
-                this.tasks.push(task);
-                return this;
+            this.tasks.push(task);
+            return this;
            },
            sleep(time){
                 function task(){
@@ -69,8 +66,8 @@
                         }, time);
                     })
                 }
-                this.tasks.push(task);
-                return this;
+            this.tasks.push(task);
+            return this;
            },
            sleepFirst(time){
             function task(){
@@ -80,12 +77,13 @@
                         }, time);
                     })
                 }
-                this.tasks.unshift(task);
-                return this;
+            this.tasks.unshift(task);
+            return this;
            }
        }
        Person("tom").eat("香蕉").sleep(2000).eat("苹果").sleepFirst(3000).eat("火腿");
     // 执行结果是：首先等待3秒 然后打印this is tom 再打印正在吃香蕉 然后等待2S 再打印正在吃苹果 最后打印正在吃火腿
+
     </script>
   </body>
 </html>

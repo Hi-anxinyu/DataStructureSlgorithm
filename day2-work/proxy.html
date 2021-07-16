@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proxy</title>
+</head>
+<body>
+    <script>
+        let oDiv = new Proxy({},{
+            get(target,propKey){
+                return function(arrt={},...children){
+                    let el = document.createElement(propKey);
+                    //循环添加属性
+                    for(let key of Object.keys(arrt)){
+                        el.setAttribute(key,arrt[key]);
+                    }
+
+                    for(let child of children){
+                        el.innerHTML += child;
+                    }
+                    console.log(el);
+                    document.body.appendChild(el);
+                }
+            }
+        })
+
+        oDiv.div({id:'box',class:'active'},'我是一个div','我是一个块级元素');
+    </script>
+</body>
+</html>
