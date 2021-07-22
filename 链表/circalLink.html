@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>循环链表</title>
+</head>
+<body>
+    <script>
+        class Node{
+            constructor(element){
+                this.element = element;
+                this.next = null;
+            }
+        }
+        class Linearlist{
+            constructor(){
+                this.head = null;
+                this.currentNode = null;
+                this.advanceNode = null;
+            }
+            add(element){
+                let node = new Node(element);
+                if(this.head){
+                    this.currentNode.next = node;
+                    this.currentNode = node;
+                    this.advanceNode = node;
+                    node.next = this.head;
+                }else{
+                    this.head = node;
+                    this.currentNode = node;
+                    this.advanceNode = node;
+                    node.next =node;
+                }  
+            }
+            remove(element){
+                let currentNode = this.find(element);
+                
+            }
+            advance(n){
+                let currentNode = this.head;
+                while(n--){
+                    currentNode = currentNode.next;
+                }
+                return currentNode;
+            }
+            find(element){
+                let currentNode = this.head;
+                while(currentNode&&currentNode.next!==this.head){
+                    if(currentNode.element===element){
+                        return currentNode;
+                    }
+                    currentNode = currentNode.next;
+                }
+            }
+            display(){
+                let str = 'head';
+                let currentNode = this.head;
+                while(currentNode&&currentNode.next!==this.head){
+                    str+=`->${currentNode.element}`;
+                    currentNode = currentNode.next;
+                }
+                str+=`->${currentNode.element}`;
+                console.log(str);
+            }
+        }
+
+        let linear = new Linearlist();
+        for(let i=1;i<=100;i++){
+            linear.add(i)
+        }
+        linear.remove('10');
+        linear.display();
+
+        for(let i=1;i<=10;i++){
+            let n = Math.floor(Math.random()*9)+5;
+            let node = linear.advance(n)
+            console.log(`第${i}次传花传到了${node.element}....${n}`);
+        }
+    </script>
+</body>
+</html>

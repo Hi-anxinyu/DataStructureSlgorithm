@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>第一周周考</title>
+  </head>
+  <body>
+    <script>
+      /**
+       *封装一个ajax函数用于网络请求（不需要新建xhr），使用setTimeout延时计时器模拟异步数据响应，用法如下：
+       *ajax({
+       *url:’’,
+       * method:’’,
+       * success:(res)=>{
+       *  }
+       *  })
+       */
+
+      //封装ajax函数
+      function ajax({ url }) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (url === "/login") {
+              Math.random() > 0.5
+                ? resolve("登录成功")
+                : reject(new Error("登陆失败"));
+            } else {
+              resolve([1, 2, 3, 4, 5]);
+            }
+          }, Math.ceil(Math.random() * 3) * 1000);
+        });
+      }
+      // ajax({url:'/login'}).then(res=>{
+      //     console.log(res);
+      // }).catch(err=>{
+      //     console.log(err);
+      // })
+      // ajax({url:'/list'}).then(res=>{
+      //     console.log(res);
+      // })
+
+      //使用all方法控制两个请求，一个请求失败，另一个停止请求
+      // let a = Promise.all(['/login','/list'].map(item=>ajax({url:item}))).then(res=>{
+      //     console.log(res);
+      // },err=>{
+      //     console.log(err);
+      // })
+
+      //使用race方法控制两个请求
+      // let b = Promise.race(['/login','/list'].map(item=>ajax({url:item}))).then(res=>{
+      //     console.log(res);
+      // },err=>{
+      //     console.log(err);
+      // });
+
+      //使用generator函数控制两个请求
+      //保证必须登录请求成功，才允许请求列表
+      function* control() {
+        let res = yield login();
+        console.log(res);
+        if (res === "登录成功") {
+          let res1 = yield list();
+        }
+      }
+      const p = control();
+      p.next();
+      function login() {
+        ajax({ url: "/login" }).then(
+          (res) => {
+            console.log(p.next(res));
+          },
+          (err) => {
+            console.log(p.next(err));
+          }
+        );
+      }
+      function list() {
+        ajax({ url: "/list" }).then(
+          (res) => {
+            console.log(p.next(res));
+          },
+          (err) => {
+            console.log(p.next(err));
+          }
+        );
+      }
+      //使用async函数控制两个请求，保证必须登录请求成功，才允许请求列表
+      async function sendAjax() {
+        try {
+          let res = await ajax({ url: "/login" });
+          console.log(res);
+          if (res === "登录成功") {
+            let res1 = await ajax({ url: "/list" });
+            console.log("列表请求", res, res1);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      sendAjax();
+
+      const obj = {
+          name:'安新宇',
+          count:{math:90}
+      }
+      function returnValue(str){
+        let keys = str.split('.');
+        let value = keys.reduce((prev,key)=>{
+            console.log(prev[key]);
+            return prev[key];
+        },obj);
+        return value;
+      }
+      returnValue('name');
+      returnValue('count.math');
+    </script>
+  </body>
+</html>

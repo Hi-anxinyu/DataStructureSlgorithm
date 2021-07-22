@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stack</title>
+</head>
+<body>
+    <script>
+
+        //定义一个栈的构造函数
+        class Stack{
+            constructor(){
+                this.data = [];
+            }
+            push(item){
+                this.data.push(item);
+            }
+            pop(){
+                this.data.pop();
+            }
+            length(){
+                return this.data.length;
+            }
+            pick(){
+                return this.data[this.data.length-1];
+            }
+            clear(){
+                this.data=[];
+            }
+        }
+       
+        //n是数值 m是进制
+        function transform(n,m){
+            let stack = new Stack();
+            while(n>=m){
+                let remainder = n%m;
+                stack.push(remainder);
+                 n = Math.floor(n/m);   
+            }
+            stack.push(n)
+            let str = '';
+            while(stack.length()){
+                str+=stack.data[stack.length()-1]
+                stack.pop();
+            }
+            return str;
+        }   
+        let res = transform(100,2);
+        console.log(res);
+    </script>
+</body>
+</html>

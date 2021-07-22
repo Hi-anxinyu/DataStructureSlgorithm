@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Node {
+        constructor(element) {
+          this.element = element;
+          this.left = null;
+          this.right = null;
+        }
+      }
+
+      class BinaryTree {
+        constructor() {
+          this.root = null;
+        }
+        add(element) {
+          let node = new Node(element);
+          let parentNode = this.root;
+          if (this.root === null) {
+             this.root = node;
+          } else {
+                while (true) {
+                        if(element<parentNode.element){
+                            if(parentNode.left===null){
+                                parentNode.left = node;
+                                break
+                            }else{
+                                parentNode = parentNode.left;
+                            }
+                        }else{
+                            if(parentNode.right===null){
+                                parentNode.right = node;
+                                break;
+                            }else{
+                                parentNode = parentNode.right;
+                            }
+                        }
+                }
+            }
+        }
+        preOrderTanverse(node){
+            if (node === null) {
+            return;
+          }
+          console.log(node.element);
+          this.preOrderTanverse(node.left);
+          this.preOrderTanverse(node.right);
+        }
+        inOrderTranverse(node) {
+          if (node === null) {
+            return;
+          }
+          this.inOrderTranverse(node.left);
+          console.log(node.element);
+          this.inOrderTranverse(node.right);
+        }
+        lastOrderTanverse(node){
+            if (node === null) {
+                return;
+            }
+          this.lastOrderTanverse(node.left);
+          this.lastOrderTanverse(node.right);
+          console.log(node.element);
+        }
+      }
+
+      let bst = new BinaryTree();
+      bst.add(100);
+      bst.add(80);
+      bst.add(60);
+      bst.add(82);
+      bst.add(81);
+      bst.add(110);
+      console.log('中序遍历********************');
+      bst.inOrderTranverse(bst.root);
+      console.log('先序遍历********************');
+      bst.preOrderTanverse(bst.root);
+      console.log('后序遍历********************');
+      bst.lastOrderTanverse(bst.root);
+    </script>
+  </body>
+</html>

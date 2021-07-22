@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * 实现的相关的数据集合需采用单向链表的形式实现
+         * 实现排序的相关操作
+         * 正确处理排序逻辑
+         * 正确实现合并逻辑
+         * 在合并的时候正确处理相同数字的处理
+         * 在合并的时候正确处理大小数字的先后排序
+         * 最终将两个合并好的最终结果输出到一个新链表中
+         * 可根据以上给出相关思想实现合并
+         * 将关键思想逻辑添加注释
+         */
+        //创建单个节点的构造函数
+        class Node{
+             constructor(element){
+                 this.element = element;
+                 this.next=null;
+             }  
+        }
+        class Linearlist{
+            constructor(){
+                this.head = null;
+                this.currentNode = null;
+            }
+            //链表添加节点
+            addNode(element){
+                let node = new Node(element);
+                //判断头节点是否存在
+                if(!this.head){
+                    this.head = node;
+                    this.currentNode = node;
+                }else{
+                    this.currentNode.next = node;
+                    this.currentNode = node;
+                }
+            }
+
+            //遍历节点->输出
+            display(){
+                let str = 'start';
+                let currentNode = this.head;
+                while(currentNode){
+                    str += `->${currentNode.element}`;
+                    currentNode = currentNode.next;
+                }
+                console.log(str);
+            }
+
+            //定义静态方法 实现链表的合并排序
+            static concatLinear(firstLinear,secondLinear){
+                let arr = [];
+                let firstCur = firstLinear.head;
+                let secondCur = secondLinear.head;
+
+                const createConcatArr =(node)=>{
+                    while(node){
+                        arr.push(node.element);
+                        node = node.next;
+                    }
+                }
+                createConcatArr(firstCur);
+                createConcatArr(secondCur);
+                //将数组进行排序
+                arr.sort((a,b)=>a-b);
+                let  newLinear = new Linearlist;
+                arr.forEach(item=>{
+                    newLinear.addNode(item);
+                })
+                return newLinear
+            }
+        }
+
+        let arr = [5,6,7,18,9,10];
+        //实例化第一个链表
+        let linear = new Linearlist();
+        arr.forEach(item=>{
+            linear.addNode(item);
+        })
+        linear.display();
+
+        let arr1 = [11,5,23,6]
+        //实例化第二个链表
+        let linear1 = new Linearlist()
+        arr1.forEach(item=>{
+            linear1.addNode(item);
+        })
+        linear1.display();
+
+        let newLinear = Linearlist.concatLinear(linear,linear1);
+        newLinear.display();
+    </script>
+
+</body>
+</html>

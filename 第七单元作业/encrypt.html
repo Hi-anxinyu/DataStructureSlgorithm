@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * 
+         *    代码密钥：凯撒加密法是一种简单的消息编码方式，它是按照字母表将消息中的每个字母移动常量的k位，
+         * 但这种方式极易破解，因为字母的移动只有26种可能。
+              因此我们使用重复密钥：这是不是将每个字母移动常数位，
+           而是利用一个密钥值列表，将各个字母移动不同的位数。如果消息比密钥值长，可以从头再使用这个密钥值列表；
+            //消息的密钥         
+            const key = [5, 12, -3, 8, -9, 4, 10];     
+            // 消息      
+            const message = "All programmers are playWrights and all computers are lousy actors"; 
+         */
+
+         //密钥
+         const key = [5, 12, -3, 8, -9, 4, 10]; 
+         //消息
+         const message = "All programmers are playWrights and all computers are lousy actors"; 
+
+         //构造函数
+         class Queue{
+             constructor(){
+                 this.data = [];
+             }
+             //入列
+             enqueue(item){
+                 this.data.push(item);
+             }
+             //出列
+             dequeue(){
+                 return this.data.shift();
+             }
+             //队列长度
+             length(){
+                 return this.data.length;
+             }
+             //清空队列
+             clear(){
+                 this.data = [];
+             }
+             //即将出列元素
+             pick(){
+                 return this.data[0];
+             }
+         }
+         //实例化队列
+         let queue = new Queue();
+         //将密钥添加到队列
+         key.forEach(item=>{
+            queue.enqueue(item);
+         })
+         //加密字符串
+         function encryptString(str){
+            let newMes = '';
+            for(let i=0;i<str.length;i++){
+            newMes+=String.fromCharCode((str[i].charCodeAt())+queue.pick());
+            queue.enqueue(queue.dequeue());
+            }
+            //对打乱的密钥进行重写
+            for(let i=0;i<queue.length();i++){
+                queue.dequeue();
+                queue.enqueue(key[i]);
+            }
+            console.log(queue.data);
+            return newMes;
+         }
+         let encrypt = encryptString(message);
+         console.log(encrypt);
+
+        // 解密字符串
+         function decodeString(str){
+            let newMes = '';
+            for(let i=0;i<str.length;i++){
+            newMes+=String.fromCharCode((str[i].charCodeAt())+(-1*queue.pick()));
+            queue.enqueue(queue.dequeue());
+            }
+            //对打乱的密钥进行重写
+            for(let i=0;i<queue.length();i++){
+                queue.dequeue();
+                queue.enqueue(key[i]);
+            }
+            return newMes;
+         }
+         let decode =decodeString(encrypt);
+         console.log(decode);
+    </script>
+</body>
+</html>

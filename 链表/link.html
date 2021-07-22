@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单向链表</title></title>
+</head>
+<body>
+    <script>
+        class Node {
+            constructor(element){
+                this.element = element;
+                this.next = null;
+            }
+        }
+        class Linearlist{
+            constructor(){
+                this.head = new Node('head'); //第一个节点
+                this.currentNode = this.head;
+                this.advanceNode = this.head;
+            }
+            add(element){
+                let node = new Node(element);
+                this.currentNode.next = node; //当前节点的下一个节点指向新增节点
+                this.currentNode = node;//当前节点变为新增节点
+            }
+            //插入节点
+            insert(element,nodeElement){
+                let currntNode = this.findNode(nodeElement);
+                let prevNode = this. findPrevNode(nodeElement);
+                let node = new Node(element);
+                prevNode.next = node;
+                node.next = currntNode;
+            }
+            remove(element){
+                let currentNode = this.findNode(element);
+                let prevNode = currentNode===this.head?'':this. findPrevNode(element);
+                if(currentNode.next===null){
+                    prevNode.next===null
+                }else if(currentNode===this.head){
+                    this.head = currentNode.next;
+                }else{
+                    prevNode.next = currentNode.next;
+                } 
+            }
+            findNode(element){
+                let currentNode = this.head;
+                while(currentNode&&currentNode.next||currentNode.next===null){
+                    if(currentNode.element===element){
+                        return currentNode;
+                    }else{
+                        currentNode = currentNode.next;
+                    }
+                }
+            }
+            change(element,nodeElement){
+                let currentNode = this.findNode(nodeElement);
+                currentNode.element = element;
+            }
+            findPrevNode(element){
+                let currentNode = this.head;
+                while(currentNode&&currentNode.next||currentNode.next===null){
+                    if(currentNode.next.element===element){
+                        return currentNode;
+                    }else{
+                        currentNode = currentNode.next;
+                    }
+                }
+            }
+            size(){
+                let currentNode = this.head;
+                let n = 0;
+                while(currentNode){
+                    n++;
+                    currentNode = currentNode.next;
+                }
+                return n;
+            }
+            advance(n){
+                while(n--){
+                    if(this.advanceNode.next===null){
+                        this.advanceNode = this.head;
+                    }else{
+                        this.advanceNode = this.advanceNode.next;
+                    }
+                }
+                return this.advanceNode;
+            }
+            //遍历所有节点
+            display(){
+                let currentNode = this.head;
+                let str = '';
+                while(currentNode && currentNode.next){
+                    str+= `${currentNode.element}->`  
+                    currentNode = currentNode.next;
+                }
+                str+= `${currentNode.element}`;
+                console.log(str);
+                return str;
+            }
+
+        }
+        // let linear = new Linearlist();
+        // for(let i=0;i<100;i++){
+        //     linear.add(`${i}`);
+        // } 
+        // linear.remove('30');
+        // linear.change('头部','head');
+        // linear.insert('1515','50');
+        // linear.insert('30','31');
+        // linear.insert('30','31');
+        // linear.remove('30');
+        // linear.insert('1516','50');
+        // let size = linear.size();
+        // console.log(size);
+        // linear.display();
+        let ysf = new Linearlist();
+        let n = Math.floor(Math.random()*3)+30,
+            q = Math.floor(Math.random()*2)+3;
+            console.log(n,q);
+        for(let i=1;i<n;i++){
+             ysf.add(i);
+        }
+
+        ysf.remove('head');
+        let dead = '死亡顺序';
+        while(ysf.size()>2){
+            let node = ysf.advance(q);
+            dead+=`->${node.element}`
+            ysf.remove(node.element);
+        }
+        console.log(dead);
+        ysf.display();
+    </script>
+</body>
+</html>

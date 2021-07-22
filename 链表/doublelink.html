@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双向链表</title>
+</head>
+<body>
+    <script>
+        class Node{
+            constructor(element){
+                this.element = element;
+                this.prev = null;
+                this.next = null;
+            }
+        }
+        class Linearlist{
+            constructor(){
+                this.head = null;
+                this.currentNode = null;
+            }
+            add(element){
+                let node = new Node(element);
+                if(!this.head){
+                   this.head = this.currentNode =  node;
+                }else{
+                    this.currentNode.next = node;
+                    node.prev = this.currentNode;
+                    this.currentNode =  node;
+                }
+               
+            }
+            remove(element){
+                let currentNode = this.find(element);
+                if(currentNode===this.head){
+                    this.head = currentNode.next;
+                    this.head.prev = null;
+                }else if(currentNode.next === null){
+                    this.currentNode = currentNode.prev;
+                    currentNode.prev.next = null;
+                }else{
+                    currentNode.prev.next = currentNode.next;
+                    currentNode.next.prev = currentNode.prev;
+                }
+            }
+            find(element){
+                let currentNode = this.head;
+                while(currentNode){
+                    if(currentNode.element === element){
+                        return currentNode;
+                    }
+                    currentNode = currentNode.next;
+                }
+            }
+            insert(element,nodeElement){
+                //先查找到元素
+                let node = this.find(nodeElement);
+                //创建新的节点
+                let newNode = new Node(element);
+                if(node===this.head){
+                    this.head.prev = newNode;
+                    newNode.next = this.head;
+                    this.head = newNode
+                }else{
+                    newNode.next = node;
+                    newNode.prev = node.prev;
+                    node.prev.next = newNode;
+                    node.prev = newNode;
+                    
+                }
+            }
+            display(){
+                let currentNode = this.head;
+                let str = 'start';
+                while(currentNode){
+                    str+=`->${currentNode.element}`;
+                    currentNode = currentNode.next;
+                }
+                console.log(str);
+            }
+            displayReverse(){
+                let currentNode = this.currentNode;
+                let str = 'end';
+                while(currentNode){
+                    str+=`->${currentNode.element}`;
+                    currentNode = currentNode.prev;
+                }
+                console.log(str);
+            }
+        }
+
+        let linear = new Linearlist();
+        for(let i=1;i<=100;i++){
+            linear.add(i);
+        }
+        linear.remove(1);
+        linear.remove(100);
+        linear.remove(5);
+        linear.insert('插入的元素',50);
+        linear.display();
+        linear.displayReverse();
+    </script>
+</body>
+</html>

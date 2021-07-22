@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise</title>
+</head>
+<body>
+    <script>
+            class MyPromise{
+                static FULFILLED = 'fulfilled';
+                static REJECTED = 'rejected';
+                static PENDING = 'pending';
+                constructor(promiseCbk){
+                    this.state = MyPromise.PENDING;
+                    this.value = null;
+                    this.allCbk = [];
+                    try {
+                        promiseCbk(this.resove.bind(this),this.reject.bind(this));
+                    } catch (error) {
+                        this.reject(error);
+                    }
+                }
+                resolve(value){
+                    if(this.state === MyPromise.PENDING){
+                        this.state = MyPromise.FULFILLED;
+                        this.value = value;
+                        setTimeout(()=>{
+                            this.allCbk.forEach(item=>{
+                                item.onFulfilled(this.value);
+                            })
+                        })
+                    }
+                }
+                reject(value){
+                    if(this.state === MyPromise.PENDING){
+                        this.state = MyPromise.REJECTED;
+                        this.value = value;
+                        setTimeout(()=>{
+                            this.allCbk.forEach(item=>{
+                                item.onRejected(this.value);
+                            })
+                        })
+                    }
+                }
+                then(onFulfilled,onRejected){
+                    if(typeof  onFulfilled !=='function'){
+                        onFulfilled = () => this.value;
+                    }
+                    if(typeof  onRejected !=='function'){
+                        onRejected = () => this.value;
+                    }
+                    return new MyPromise((resolve,reject)=>{
+                        if(this.state === MyPromise.PENDING){
+                            this.allCbk.push({
+                                onFulfilled:(value)=>{
+                                    try {
+                                        let res = onFulfilled(this.value);
+                                        resolve(res);
+                                    } catch (error) {
+                                        onRejected(error)
+                                    }
+                                },
+                                onRejected:(value)=>{
+                                    try {
+                                        let res = onRejected(this.value);
+                                        resolve(res);
+                                    } catch (error) {
+                                        onRejected(error)
+                                    }
+                                }
+                            })
+                        }
+                        if(this.state === MyPromise.FULFILLED){
+                            setTimeout(()=>{
+                                try {
+                                    let res = onFulfilled(this.value);
+                                    resolve(res);
+                                } catch (error) {
+                                    onRejected(error);
+                                }
+                            })
+                        }
+                        if(this.state === MyPromise.REJECTED){
+                            setTimeout(()=>{
+                                try {
+                                    let res = onRejected(this.value);
+                                    resolve(res);
+                                } catch (error) {
+                                    onRejected(error)
+                                }
+                            })
+                        }
+                    })
+                }
+                static resovle(value){
+                    return new Promise((resolve,reject)=>{
+                        if(value instanceof MyPromise){
+                            value.then(resovle,reject);
+                        }else{
+                            resolve(value);
+                        }
+                    })
+                }
+                static reject(value){
+                    return new Promise((resolve,reject)=>{
+                        if(value instanceof MyPromise){
+                            value.then(resovle,reject);
+                        }else{
+                            reject(value);
+                        }
+                    })
+                }
+
+                static all(promise){
+                    const allResult = [];
+                    return new Promise((resolve,reject)=>{
+                        promise.forEach(item=>{
+                            item.then(tureRes=>{
+                                allResult.push(tureRes);
+                                if(allResult.length ===promise.length){
+                                    resolve(tureRes);
+                                }
+                            },falseRes=>{
+                                    reject(falseRes);
+                            })
+                        })
+                    })
+                }
+                static race(promise){
+                    return new Promise((resolve,reject)=>{
+                        promise.forEach(item=>{
+                            item.then(tureRes=>{
+                                allResult.push(tureRes);
+                            },falseRes=>{
+                                reject(falseRes);
+                            })
+                        })
+                    })
+                }
+        }
+    </script>
+</body>
+</html>
